@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Letter Flash</title>
+  <style>
+    html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #2E2B5F
+; /* blue-purple */
+  color: white;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#letter {
+  font-size: 40rem; /* huge letter */
+  margin: 20px;
+}
+
+button {
+  font-size: 1.5rem;
+  margin: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* Bounce animation */
+#letter.correct {
+  animation: bounce 0.3s ease;
+}
+
+@keyframes bounce {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+  </style>
+</head>
+<body>
+  <div id="letter">A</div>
+  <button onclick="nextLetter()">Next</button>
+  <button onclick="toggleCase()">Toggle Case</button>
+
+  <script>
+    let isUpperCase = true;
+    let currentLetter = 'A';
+
+    function getRandomLetter() {
+      const letters = 'abcdefghijklmnopqrstuvwxyz';
+      const index = Math.floor(Math.random() * letters.length);
+      return isUpperCase ? letters[index].toUpperCase() : letters[index];
+    }
+
+    function speakLetter(letter) {
+      const utterance = new SpeechSynthesisUtterance(letter);
+      speechSynthesis.speak(utterance);
+    }
+
+    function showLetter(letter) {
+      currentLetter = letter;
+      document.getElementById('letter').textContent = letter;
+      speakLetter(letter);
+    }
+
+    function nextLetter() {
+      const letter = getRandomLetter();
+      showLetter(letter);
+    }
+
+    function toggleCase() {
+      isUpperCase = !isUpperCase;
+      nextLetter();
+    }
+
+    function animateLetter() {
+      const letterEl = document.getElementById('letter');
+      letterEl.classList.add('correct');
+      setTimeout(() => {
+        letterEl.classList.remove('correct');
+      }, 300);
+    }
+
+    // Listen for keypress
+    document.addEventListener('keydown', (event) => {
+      const pressed = event.key;
+      if (pressed.length === 1) {
+        const expected = isUpperCase ? pressed.toUpperCase() : pressed.toLowerCase();
+        if (expected === currentLetter) {
+          animateLetter();
+          setTimeout(() => {
+            nextLetter();
+          }, 500); // delay before next letter
+        }
+      }
+    });
+
+    // Start with a spoken letter
+    showLetter(currentLetter);
+  </script>
+</body>
+</html>
