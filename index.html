@@ -5,49 +5,57 @@
   <title>Letter Flash</title>
   <style>
     html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: #2E2B5F
-; /* blue-purple */
-  color: white;
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #2E2B5F; /* deep purple background */
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-#letter {
-  font-size: 40rem; /* huge letter */
-  margin: 20px;
-}
+    #letter {
+      font-size: 20rem; /* huge letter */
+      margin: 20px;
+      color: #ffe69a;
+      background-color: transparent;
+      padding: 20px 40px;
+      border-radius: 12px;
+      text-shadow:
+        #ffae00 2.5px 2.5px 0,
+        #ff00c0 5px 5px 0,
+        #aa0306 7.5px 7.5px 0,
+        #7c0003 10px 10px 10px;
+    }
 
-button {
-  font-size: 1.5rem;
-  margin: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  cursor: pointer;
-}
+    button {
+      font-size: 1.5rem;
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+    }
 
-button:hover {
-  background: rgba(255, 255, 255, 0.35);
-}
+    button:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
 
-/* Bounce animation */
-#letter.correct {
-  animation: bounce 0.3s ease;
-}
+    /* Bounce animation */
+    #letter.correct {
+      animation: bounce 0.3s ease;
+    }
 
-@keyframes bounce {
-  0%   { transform: scale(1); }
-  50%  { transform: scale(1.5); }
-  100% { transform: scale(1); }
-}
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
   </style>
 </head>
 <body>
