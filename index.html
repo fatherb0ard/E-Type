@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      background-color: #2E2B5F; /* deep purple background */
+      background-color: #2E2B5F;
       color: white;
       font-family: sans-serif;
       display: flex;
@@ -23,7 +23,7 @@
     }
 
     #letter {
-      font-size: 20rem; /* huge letter */
+      font-size: 20rem;
       margin: 20px;
       color: #ffe69a;
       background-color: transparent;
@@ -51,7 +51,7 @@
       background: rgba(255, 255, 255, 0.35);
     }
 
-    /* Bounce animation */
+    /* Bounce animation for correct */
     #letter.correct {
       animation: bounce 0.3s ease;
     }
@@ -60,6 +60,19 @@
       0%   { transform: scale(1); }
       50%  { transform: scale(1.5); }
       100% { transform: scale(1); }
+    }
+
+    /* Shake animation for wrong */
+    #letter.wrong {
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      60% { transform: translateX(-10px); }
+      80% { transform: translateX(10px); }
     }
   </style>
 </head>
@@ -73,6 +86,10 @@
     let isUpperCase = true;
     let currentLetter = 'A';
     let streak = 0;
+
+    // Preload buzzer sound (replace with your own file if you want)
+    const buzzer = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+    buzzer.volume = 0.2; // softer volume (0.0 to 1.0)
 
     function getRandomLetter() {
       const letters = 'abcdefghijklmnopqrstuvwxyz';
@@ -101,12 +118,20 @@
       nextLetter();
     }
 
-    function animateLetter() {
+    function animateLetterCorrect() {
       const letterEl = document.getElementById('letter');
       letterEl.classList.add('correct');
       setTimeout(() => {
         letterEl.classList.remove('correct');
       }, 300);
+    }
+
+    function animateLetterWrong() {
+      const letterEl = document.getElementById('letter');
+      letterEl.classList.add('wrong');
+      setTimeout(() => {
+        letterEl.classList.remove('wrong');
+      }, 400);
     }
 
     function updateStreak() {
@@ -121,13 +146,16 @@
         if (expected === currentLetter) {
           streak++;
           updateStreak();
-          animateLetter();
+          animateLetterCorrect();
           setTimeout(() => {
             nextLetter();
-          }, 500); // delay before next letter
+          }, 500);
         } else {
           streak = 0;
           updateStreak();
+          animateLetterWrong();
+          buzzer.currentTime = 0; // restart sound
+          buzzer.play();
         }
       }
     });
